@@ -1,8 +1,4 @@
 import { useState, useMemo } from "react";
-import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, ReferenceLine, Legend,
-} from "recharts";
 import { Plus, X, Activity, AlertTriangle, AlertOctagon, Info, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 
