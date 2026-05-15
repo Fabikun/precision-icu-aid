@@ -271,6 +271,48 @@ export default function PeepTitrationTool() {
         </div>
       )}
 
+      {/* KPI Chips */}
+      {rows.length > 0 && (
+        <div className="space-y-3">
+          <div className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">KPIs por lectura</div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            {[...rows].sort((a, b) => a.p - b.p).map((r, idx) => {
+              const dpSev = r.dp >= 18 ? "error" : r.dp >= 15 ? "warning" : "ok";
+              const cstSev = r.cst < 20 ? "warning" : "ok";
+              const dotCls = (s: string) =>
+                s === "error" ? "bg-destructive" :
+                s === "warning" ? "bg-warning" : "bg-success";
+              return (
+                <div key={idx} className="glass-card p-3 flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground">PEEP</span>
+                    <span className="font-display text-lg font-semibold text-primary">{r.p}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">DP</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className={dpSev === "error" ? "text-destructive font-semibold" : dpSev === "warning" ? "text-warning font-semibold" : "text-success font-semibold"}>
+                        {r.dp.toFixed(1)}
+                      </span>
+                      <span className="w-1.5 h-1.5 rounded-full {dotCls(dpSev)}" />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">Cst</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className={cstSev === "warning" ? "text-warning font-semibold" : "text-success font-semibold"}>
+                        {r.cst.toFixed(1)}
+                      </span>
+                      <span className={`w-1.5 h-1.5 rounded-full ${dotCls(cstSev)}`} />
+                    </div>
+                  </div>
+                  {r.note && <div className="text-[10px] text-muted-foreground truncate">{r.note}</div>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Table */}
       <div className="space-y-3">
