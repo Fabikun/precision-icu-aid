@@ -17,6 +17,7 @@ const TOOL_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentT
   hacor:    lazy(() => import("@/components/tools/HACORTool")),
   pim:      lazy(() => import("@/components/tools/PIMTool")),
   weaning:  lazy(() => import("@/components/tools/WeaningTool")),
+  "peep-titration": lazy(() => import("@/components/tools/PeepTitrationTool")),
   fss:      lazy(() => import("@/components/tools/FSSTool")),
   mrc:      lazy(() => import("@/components/tools/MRCTool")),
   ims:      lazy(() => import("@/components/tools/IMSTool")),
