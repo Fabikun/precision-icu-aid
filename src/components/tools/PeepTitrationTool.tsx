@@ -81,19 +81,6 @@ const getBest = (rows: Row[]) => {
   return { bc, bd };
 };
 
-function ChartTooltip({ active, payload, label }: any) {
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="rounded-lg border border-border bg-popover px-3 py-2 shadow-md">
-      <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">PEEP {label} cmH₂O</div>
-      {payload.map((p: any, i: number) => (
-        <div key={i} className="text-xs font-mono-num" style={{ color: p.color }}>
-          {p.name}: <span className="font-semibold">{p.value}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 export default function PeepTitrationTool() {
   const [rows, setRows] = useState<Row[]>([]);
@@ -130,15 +117,6 @@ export default function PeepTitrationTool() {
 
   const { bc, bd } = getBest(rows);
   const bestPeep = rows[bc]?.p;
-  const chartData = [...rows].sort((a, b) => a.p - b.p).map(r => ({ peep: r.p, cst: r.cst, dp: r.dp }));
-
-  // Chart colors using app tokens
-  const primaryHex = "hsl(178 78% 48%)";
-  const successHex = "hsl(152 70% 48%)";
-  const warnHex = "hsl(35 92% 58%)";
-  const dangerHex = "hsl(0 78% 58%)";
-  const mutedHex = "hsl(215 14% 62%)";
-  const borderHex = "hsl(220 14% 22%)";
 
   const fields = [
     { f: "peep",  label: "PEEP",      unit: "cmH₂O", ph: "14"  },
