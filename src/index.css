@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CODEX Tools — Dark Medical Pro design system
+   All colors MUST be HSL. Mobile-first. */
+
+@layer base {
+  :root {
+    /* Default to dark — clinical pro */
+    --background: 220 18% 7%;
+    --foreground: 210 20% 96%;
+
+    --surface: 220 16% 10%;
+    --surface-2: 220 14% 13%;
+    --surface-3: 220 13% 17%;
+
+    --card: 220 16% 11%;
+    --card-foreground: 210 20% 96%;
+
+    --popover: 220 16% 11%;
+    --popover-foreground: 210 20% 96%;
+
+    /* Teal/cian accent — confiable, clínico */
+    --primary: 178 78% 48%;
+    --primary-foreground: 220 25% 6%;
+    --primary-glow: 178 90% 60%;
+    --primary-soft: 178 60% 18%;
+
+    --secondary: 220 14% 16%;
+    --secondary-foreground: 210 20% 92%;
+
+    --muted: 220 14% 14%;
+    --muted-foreground: 215 14% 62%;
+
+    --accent: 178 78% 48%;
+    --accent-foreground: 220 25% 6%;
+
+    --destructive: 0 78% 58%;
+    --destructive-foreground: 210 20% 98%;
+
+    --warning: 35 92% 58%;
+    --warning-foreground: 220 25% 6%;
+
+    --success: 152 70% 48%;
+    --success-foreground: 220 25% 6%;
+
+    --info: 210 90% 62%;
+    --info-foreground: 220 25% 6%;
+
+    --border: 220 14% 18%;
+    --input: 220 14% 16%;
+    --ring: 178 78% 48%;
+
+    --radius: 1rem;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(178 78% 48%), hsl(190 85% 52%));
+    --gradient-surface: linear-gradient(180deg, hsl(220 16% 11%), hsl(220 16% 9%));
+    --gradient-hero: radial-gradient(circle at 20% 0%, hsl(178 78% 48% / 0.18), transparent 55%),
+                     radial-gradient(circle at 80% 10%, hsl(210 90% 62% / 0.10), transparent 50%),
+                     linear-gradient(180deg, hsl(220 18% 8%), hsl(220 18% 6%));
+    --gradient-card: linear-gradient(160deg, hsl(220 16% 12%) 0%, hsl(220 16% 10%) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px hsl(220 25% 3% / 0.4);
+    --shadow-md: 0 4px 12px hsl(220 25% 3% / 0.45);
+    --shadow-lg: 0 18px 40px hsl(220 25% 3% / 0.55);
+    --shadow-glow: 0 0 30px hsl(178 78% 48% / 0.25);
+    --shadow-inset: inset 0 1px 0 hsl(0 0% 100% / 0.05);
+
+    /* Motion */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Sidebar (kept) */
+    --sidebar-background: 220 18% 7%;
+    --sidebar-foreground: 210 20% 92%;
+    --sidebar-primary: 178 78% 48%;
+    --sidebar-primary-foreground: 220 25% 6%;
+    --sidebar-accent: 220 14% 14%;
+    --sidebar-accent-foreground: 210 20% 92%;
+    --sidebar-border: 220 14% 18%;
+    --sidebar-ring: 178 78% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body, #root {
+    @apply bg-background text-foreground;
+    min-height: 100vh;
+  }
+
+  body {
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background: hsl(var(--background));
+  }
+
+  /* Numeric/data feel for results */
+  .font-mono-num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  /* Mobile-friendly tap targets */
+  button, a, select, input { -webkit-tap-highlight-color: transparent; }
+
+  /* Scrollbar polish */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--surface-3)); border-radius: 999px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+}
+
+@layer components {
+  .glass-card {
+    background: var(--gradient-card);
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-md), var(--shadow-inset);
+    border-radius: var(--radius);
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium;
+    background: hsl(var(--surface-2));
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-[13px] font-medium tracking-wide text-foreground/80;
+  }
+
+  .field-input {
+    @apply w-full rounded-xl px-4 py-3 text-base outline-none transition-all;
+    background: hsl(var(--input));
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
+  }
+  .field-input:focus {
+    border-color: hsl(var(--primary) / 0.6);
+    box-shadow: 0 0 0 4px hsl(var(--primary) / 0.15);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all active:scale-[0.98];
+    background: var(--gradient-primary);
+    color: hsl(var(--primary-foreground));
+    box-shadow: var(--shadow-md), 0 0 0 1px hsl(var(--primary) / 0.4);
+  }
+  .btn-primary:hover { box-shadow: var(--shadow-glow), 0 0 0 1px hsl(var(--primary) / 0.6); }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all active:scale-[0.98];
+    background: hsl(var(--surface-2));
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+  }
+  .btn-ghost:hover { background: hsl(var(--surface-3)); }
+
+  .info-block {
+    @apply rounded-xl px-4 py-3 text-[13px] leading-relaxed;
+    background: hsl(var(--surface-2));
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+@layer utilities {
+  .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom), 1rem); }
+  .safe-top    { padding-top: max(env(safe-area-inset-top), 0.5rem); }
+  .text-balance { text-wrap: balance; }
+}
