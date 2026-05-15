@@ -294,7 +294,7 @@ export default function PeepTitrationTool() {
                       <span className={dpSev === "error" ? "text-destructive font-semibold" : dpSev === "warning" ? "text-warning font-semibold" : "text-success font-semibold"}>
                         {r.dp.toFixed(1)}
                       </span>
-                      <span className="w-1.5 h-1.5 rounded-full {dotCls(dpSev)}" />
+                      <span className={`w-1.5 h-1.5 rounded-full ${dotCls(dpSev)}`} />
                     </div>
                   </div>
                   <div className="flex items-center justify-between text-xs">
