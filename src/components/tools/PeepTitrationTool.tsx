@@ -1,8 +1,4 @@
 import { useState, useMemo } from "react";
-import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, ReferenceLine, Legend,
-} from "recharts";
 import { Plus, X, Activity, AlertTriangle, AlertOctagon, Info, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 
@@ -85,19 +81,6 @@ const getBest = (rows: Row[]) => {
   return { bc, bd };
 };
 
-function ChartTooltip({ active, payload, label }: any) {
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="rounded-lg border border-border bg-popover px-3 py-2 shadow-md">
-      <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">PEEP {label} cmH₂O</div>
-      {payload.map((p: any, i: number) => (
-        <div key={i} className="text-xs font-mono-num" style={{ color: p.color }}>
-          {p.name}: <span className="font-semibold">{p.value}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 export default function PeepTitrationTool() {
   const [rows, setRows] = useState<Row[]>([]);
@@ -134,15 +117,6 @@ export default function PeepTitrationTool() {
 
   const { bc, bd } = getBest(rows);
   const bestPeep = rows[bc]?.p;
-  const chartData = [...rows].sort((a, b) => a.p - b.p).map(r => ({ peep: r.p, cst: r.cst, dp: r.dp }));
-
-  // Chart colors using app tokens
-  const primaryHex = "hsl(178 78% 48%)";
-  const successHex = "hsl(152 70% 48%)";
-  const warnHex = "hsl(35 92% 58%)";
-  const dangerHex = "hsl(0 78% 58%)";
-  const mutedHex = "hsl(215 14% 62%)";
-  const borderHex = "hsl(220 14% 22%)";
 
   const fields = [
     { f: "peep",  label: "PEEP",      unit: "cmH₂O", ph: "14"  },
@@ -297,39 +271,6 @@ export default function PeepTitrationTool() {
         </div>
       )}
 
-      {/* Chart */}
-      {rows.length >= 2 && (
-        <div className="space-y-3">
-          <div className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">Curvas vs PEEP</div>
-          <div className="glass-card p-3 sm:p-4">
-            <ResponsiveContainer width="100%" height={280}>
-              <LineChart data={chartData} margin={{ top: 12, right: 16, bottom: 20, left: 0 }}>
-                <CartesianGrid strokeDasharray="2 4" stroke={borderHex} />
-                <XAxis dataKey="peep" stroke={mutedHex} tick={{ fill: mutedHex, fontSize: 10 }}
-                  label={{ value: "PEEP (cmH₂O)", position: "insideBottom", offset: -8, fill: mutedHex, fontSize: 10 }} />
-                <YAxis yAxisId="cst" orientation="left" stroke={successHex} tick={{ fill: mutedHex, fontSize: 10 }} />
-                <YAxis yAxisId="dp" orientation="right" stroke={warnHex} tick={{ fill: mutedHex, fontSize: 10 }} />
-                <Tooltip content={<ChartTooltip />} cursor={{ stroke: borderHex }} />
-                <Legend wrapperStyle={{ fontSize: 10, paddingTop: 8, color: mutedHex }} />
-                <ReferenceLine yAxisId="dp" y={15} stroke={dangerHex} strokeDasharray="4 4" strokeOpacity={0.6}
-                  label={{ value: "DP=15", position: "insideTopRight", fill: dangerHex, fontSize: 9 }} />
-                {bestPeep !== undefined && (
-                  <ReferenceLine yAxisId="cst" x={bestPeep} stroke={primaryHex} strokeDasharray="4 4" strokeOpacity={0.5}
-                    label={{ value: `PEEP ${bestPeep}`, position: "insideTopLeft", fill: primaryHex, fontSize: 9 }} />
-                )}
-                <Line yAxisId="cst" type="monotone" dataKey="cst" name="Compliance" stroke={successHex} strokeWidth={1.75}
-                  dot={{ r: 3.5, fill: successHex, strokeWidth: 0 }} activeDot={{ r: 5 }} />
-                <Line yAxisId="dp" type="monotone" dataKey="dp" name="Driving P." stroke={warnHex} strokeWidth={1.75}
-                  dot={(props: any) => {
-                    const { cx, cy, payload, index } = props;
-                    return <circle key={index} cx={cx} cy={cy} r={3.5} fill={payload.dp >= 15 ? dangerHex : warnHex} />;
-                  }}
-                  activeDot={{ r: 5 }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      )}
 
       {/* Table */}
       <div className="space-y-3">
