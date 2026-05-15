@@ -72,6 +72,7 @@ export const TOOLS: ToolMeta[] = [
   { id: "hacor",     name: "Score HACOR",                category: "respiratoria", description: "Riesgo de fracaso de VMNI" },
   { id: "pim",       name: "PIm / IMT",                  category: "respiratoria", description: "Cargas de entrenamiento inspiratorio" },
   { id: "weaning",   name: "Weaning",                    category: "respiratoria", description: "Tobin (RSBI) + fracción de engrosamiento diafragmático" },
+  { id: "peep-titration", name: "Titulación de PEEP",   shortName: "PEEP", category: "respiratoria", description: "Decremental: Cst, driving pressure y PEEP óptimo", tags: ["VMI", "SDRA", "reclutamiento"] },
 
   // Física
   { id: "fss",       name: "FSS-ICU",                    category: "fisica", description: "Functional Status Score in ICU (0–35)" },
