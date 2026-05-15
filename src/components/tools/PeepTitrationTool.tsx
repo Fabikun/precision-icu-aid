@@ -314,7 +314,7 @@ export default function PeepTitrationTool() {
                 <ReferenceLine yAxisId="dp" y={15} stroke={dangerHex} strokeDasharray="4 4" strokeOpacity={0.6}
                   label={{ value: "DP=15", position: "insideTopRight", fill: dangerHex, fontSize: 9 }} />
                 {bestPeep !== undefined && (
-                  <ReferenceLine x={bestPeep} stroke={primaryHex} strokeDasharray="4 4" strokeOpacity={0.5}
+                  <ReferenceLine yAxisId="cst" x={bestPeep} stroke={primaryHex} strokeDasharray="4 4" strokeOpacity={0.5}
                     label={{ value: `PEEP ${bestPeep}`, position: "insideTopLeft", fill: primaryHex, fontSize: 9 }} />
                 )}
                 <Line yAxisId="cst" type="monotone" dataKey="cst" name="Compliance" stroke={successHex} strokeWidth={1.75}
