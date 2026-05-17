@@ -21,28 +21,50 @@ export default function ResetPassword() {
   useEffect(() => {
     document.title = "Restablecer contraseña · Codex Tools";
 
-    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY" || (event === "SIGNED_IN" && session)) {
-        setRecoveryReady(true);
-        setChecking(false);
-      }
-    });
+    let cancelled = false;
 
-    // Fallback: if there's already a session (recovery token already exchanged), allow it.
-    // Otherwise wait briefly then redirect.
-    const timer = setTimeout(async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        setRecoveryReady(true);
-      } else {
+    const verifyRecovery = async () => {
+      // Check if URL has a recovery hash. Supabase client will auto-exchange it
+      // into a session on load, so we just need to wait briefly then validate.
+      const hasRecoveryHash = window.location.hash.includes("type=recovery");
+
+      if (!hasRecoveryHash) {
+        // No recovery token in URL; check if there's already a valid session.
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          if (!cancelled) navigate("/", { replace: true });
+          return;
+        }
+        // Session exists but we got here without a recovery hash.
+        // Still allow it so the user can set a new password.
+      }
+
+      // Wait up to ~3 seconds for Supabase to exchange the recovery token into a session.
+      let attempts = 0;
+      while (attempts < 15) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          if (!cancelled) {
+            setRecoveryReady(true);
+            setChecking(false);
+          }
+          return;
+        }
+        await new Promise((r) => setTimeout(r, 200));
+        attempts++;
+      }
+
+      // No session established after waiting — redirect to login.
+      if (!cancelled) {
+        setChecking(false);
         navigate("/", { replace: true });
       }
-      setChecking(false);
-    }, 1500);
+    };
+
+    verifyRecovery();
 
     return () => {
-      sub.subscription.unsubscribe();
-      clearTimeout(timer);
+      cancelled = true;
     };
   }, [navigate]);
 
