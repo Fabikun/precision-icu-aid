@@ -62,7 +62,7 @@ export default function Login() {
     setRecoveryLoading(true);
     try {
       await supabase.auth.resetPasswordForEmail(recoveryEmail.trim().toLowerCase(), {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/reset-password`,
       });
       setRecoverySent(true);
     } finally {
