@@ -21,16 +21,24 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <AuthGate>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/c/:id" element={<CategoryPage />} />
-              <Route path="/t/:id" element={<ToolPage />} />
-              <Route path="/cuenta" element={<Profile />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AuthGate>
+          <Routes>
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="*"
+              element={
+                <AuthGate>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/c/:id" element={<CategoryPage />} />
+                    <Route path="/t/:id" element={<ToolPage />} />
+                    <Route path="/cuenta" element={<Profile />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </AuthGate>
+              }
+            />
+          </Routes>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
