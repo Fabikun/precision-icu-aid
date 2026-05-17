@@ -25,19 +25,27 @@ export default function ResetPassword() {
     let cancelled = false;
 
     const verifyRecovery = async () => {
-      // Check if URL has a recovery hash. Supabase client will auto-exchange it
-      // into a session on load, so we just need to wait briefly then validate.
-      const hasRecoveryHash = window.location.hash.includes("type=recovery");
+      const hash = window.location.hash || "";
+      const hasRecoveryHash = hash.includes("type=recovery");
+      const hasAuthError = hash.includes("error=") || hash.includes("error_code=");
+
+      if (hasAuthError) {
+        if (!cancelled) {
+          setInvalidLink(true);
+          setChecking(false);
+        }
+        return;
+      }
 
       if (!hasRecoveryHash) {
-        // No recovery token in URL; check if there's already a valid session.
         const { data: { session } } = await supabase.auth.getSession();
         if (!session) {
-          if (!cancelled) navigate("/", { replace: true });
+          if (!cancelled) {
+            setInvalidLink(true);
+            setChecking(false);
+          }
           return;
         }
-        // Session exists but we got here without a recovery hash.
-        // Still allow it so the user can set a new password.
       }
 
       // Wait up to ~3 seconds for Supabase to exchange the recovery token into a session.
@@ -55,10 +63,9 @@ export default function ResetPassword() {
         attempts++;
       }
 
-      // No session established after waiting — redirect to login.
       if (!cancelled) {
+        setInvalidLink(true);
         setChecking(false);
-        navigate("/", { replace: true });
       }
     };
 
