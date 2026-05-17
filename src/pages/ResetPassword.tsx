@@ -11,6 +11,7 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const [recoveryReady, setRecoveryReady] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [invalidLink, setInvalidLink] = useState(false);
 
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
