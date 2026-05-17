@@ -8,6 +8,7 @@ import CategoryPage from "./pages/Category.tsx";
 import ToolPage from "./pages/Tool.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Profile from "./pages/Profile.tsx";
+import ResetPassword from "./pages/ResetPassword.tsx";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AuthGate } from "./components/AuthGate";
 
