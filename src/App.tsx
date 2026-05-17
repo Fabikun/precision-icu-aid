@@ -8,6 +8,7 @@ import CategoryPage from "./pages/Category.tsx";
 import ToolPage from "./pages/Tool.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Profile from "./pages/Profile.tsx";
+import ResetPassword from "./pages/ResetPassword.tsx";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AuthGate } from "./components/AuthGate";
 
@@ -20,16 +21,24 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <AuthGate>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/c/:id" element={<CategoryPage />} />
-              <Route path="/t/:id" element={<ToolPage />} />
-              <Route path="/cuenta" element={<Profile />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AuthGate>
+          <Routes>
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="*"
+              element={
+                <AuthGate>
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/c/:id" element={<CategoryPage />} />
+                    <Route path="/t/:id" element={<ToolPage />} />
+                    <Route path="/cuenta" element={<Profile />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </AuthGate>
+              }
+            />
+          </Routes>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
