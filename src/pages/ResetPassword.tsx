@@ -113,7 +113,7 @@ export default function ResetPassword() {
     }
   };
 
-  if (!recoveryReady) {
+  if (checking) {
     return (
       <div className="min-h-screen grid place-items-center bg-background text-muted-foreground">
         <div className="flex flex-col items-center gap-3">
@@ -122,6 +122,43 @@ export default function ResetPassword() {
         </div>
       </div>
     );
+  }
+
+  if (invalidLink) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background text-foreground">
+        <main className="flex-1 flex items-center justify-center px-4 py-10">
+          <div className="w-full max-w-sm">
+            <div className="flex flex-col items-center text-center mb-6">
+              <div className="h-14 w-14 rounded-2xl bg-surface-2 border border-border/70 grid place-items-center shadow-glow overflow-hidden">
+                <img src={codexLogo} alt="Codex" className="h-12 w-12 object-contain" />
+              </div>
+              <h1 className="mt-5 font-display text-2xl font-semibold tracking-tight">
+                Enlace no válido
+              </h1>
+            </div>
+
+            <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-3.5 text-sm text-destructive-foreground/90 flex gap-2.5 mb-4">
+              <ShieldAlert className="h-4 w-4 mt-0.5 shrink-0 text-destructive" />
+              <p className="leading-snug">
+                El enlace de recuperación no es válido o ha expirado. Solicita uno nuevo desde la pantalla de inicio de sesión.
+              </p>
+            </div>
+
+            <Button
+              onClick={() => navigate("/", { replace: true })}
+              className="w-full h-11 font-semibold"
+            >
+              Volver al inicio de sesión
+            </Button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (!recoveryReady) {
+    return null;
   }
 
   return (
