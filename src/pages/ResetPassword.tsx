@@ -105,10 +105,13 @@ export default function ResetPassword() {
     }
   };
 
-  if (checking && !recoveryReady) {
+  if (!recoveryReady) {
     return (
       <div className="min-h-screen grid place-items-center bg-background text-muted-foreground">
-        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="h-6 w-6 animate-spin text-primary" />
+          <p className="text-sm text-muted-foreground">Verificando enlace de recuperación…</p>
+        </div>
       </div>
     );
   }
