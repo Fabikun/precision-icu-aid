@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, UserCircle2 } from "lucide-react";
 import codexLogo from "@/assets/codex-logo.png";
 
 interface AppHeaderProps {
@@ -53,7 +53,15 @@ export function AppHeader({ title, subtitle, showBack, rightSlot }: AppHeaderPro
           {subtitle ? <p className="truncate text-xs text-muted-foreground">{subtitle}</p> : null}
         </div>
 
-        {rightSlot}
+        {rightSlot ?? (
+          <Link
+            to="/cuenta"
+            className="grid h-10 w-10 place-items-center rounded-xl bg-surface-2 border border-border/70 text-foreground/80 hover:text-foreground transition-colors"
+            aria-label="Mi cuenta"
+          >
+            <UserCircle2 className="h-5 w-5" />
+          </Link>
+        )}
       </div>
     </header>
   );
