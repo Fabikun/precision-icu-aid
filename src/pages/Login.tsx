@@ -25,6 +25,11 @@ export default function Login() {
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
 
+  const [recoveryMode, setRecoveryMode] = useState(false);
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [recoveryLoading, setRecoveryLoading] = useState(false);
+  const [recoverySent, setRecoverySent] = useState(false);
+
   useEffect(() => {
     document.title = "Acceder · Codex Tools";
   }, []);
@@ -49,6 +54,19 @@ export default function Login() {
       }
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleRecovery = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setRecoveryLoading(true);
+    try {
+      await supabase.auth.resetPasswordForEmail(recoveryEmail.trim().toLowerCase(), {
+        redirectTo: window.location.origin,
+      });
+      setRecoverySent(true);
+    } finally {
+      setRecoveryLoading(false);
     }
   };
 
@@ -78,7 +96,7 @@ export default function Login() {
             </div>
           )}
 
-          {!blocked && (
+          {!blocked && !recoveryMode && !recoverySent && (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
                 <Label htmlFor="email" className="text-xs text-muted-foreground">Correo</Label>
@@ -105,6 +123,13 @@ export default function Login() {
                   placeholder="••••••••"
                   className="bg-surface-2 border-border/70 h-11"
                 />
+                <button
+                  type="button"
+                  onClick={() => setRecoveryMode(true)}
+                  className="text-xs text-primary underline-offset-2 hover:underline"
+                >
+                  ¿Olvidaste tu contraseña?
+                </button>
               </div>
 
               {formError && (
@@ -119,6 +144,62 @@ export default function Login() {
                 {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Ingresar"}
               </Button>
             </form>
+          )}
+
+          {!blocked && recoveryMode && !recoverySent && (
+            <form onSubmit={handleRecovery} className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="recoveryEmail" className="text-xs text-muted-foreground">Correo</Label>
+                <Input
+                  id="recoveryEmail"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={recoveryEmail}
+                  onChange={(e) => setRecoveryEmail(e.target.value)}
+                  placeholder="tu@correo.com"
+                  className="bg-surface-2 border-border/70 h-11"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                disabled={recoveryLoading || !recoveryEmail}
+                className="w-full h-11 font-semibold"
+              >
+                {recoveryLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Enviar instrucciones"}
+              </Button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setRecoveryMode(false);
+                  setRecoveryEmail("");
+                }}
+                className="w-full text-center text-xs text-muted-foreground underline-offset-2 hover:underline"
+              >
+                Volver al inicio de sesión
+              </button>
+            </form>
+          )}
+
+          {!blocked && recoverySent && (
+            <div className="rounded-xl border border-primary/30 bg-primary/10 p-4 text-sm text-foreground/90 text-center space-y-3">
+              <p>
+                Si tu correo está registrado, recibirás un enlace para restablecer tu contraseña.
+              </p>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setRecoverySent(false);
+                  setRecoveryMode(false);
+                  setRecoveryEmail("");
+                }}
+                className="w-full h-11"
+              >
+                Volver al inicio de sesión
+              </Button>
+            </div>
           )}
 
           {blocked && (
